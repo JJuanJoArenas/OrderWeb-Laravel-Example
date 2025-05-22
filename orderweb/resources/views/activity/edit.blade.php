@@ -4,29 +4,48 @@
 @section('content')
     <div class="row">
         <div class="col-lg-12 mb-4">
-            <form action="" method="POST">
+            <form action="{{ route('activity.update', $activity['id']) }}" method="POST">
                 @csrf
+                @method('PUT')
                 <div class="row form-group">
                     <div class="col-lg-12 mb-4">
                         <label for="description">Descripcion</label>
-                        <input type="text" class="form-control" name="description" id="description" required>
+                        <input type="text" class="form-control" name="description" id="description" required
+                        value="{{ $activity['description'] }}">
                     </div>
                 </div>
                 <div class="col-lg-6 mb-4">
                     <label for="hours">Horas</label>
-                    <input type="number" class="form-control" name="hours" id="hours" required>
+                    <input type="number" class="form-control" name="hours" id="hours" required
+                    value="{{ $activity['hours'] }}">
                 </div>
                 <div class="row-form-group">
                     <div class="col-lg-6 mb-4">
                         <label for="technician_id">Tecnico</label>
                         <select name="technician_id" id="technician_id" class="form-control">
                             <option value="">Seleccione</option>
+                            @foreach ($technicians as $technician)
+                                <option value="{{ $technician['id'] }}"
+                                    @if ($technician['id'] == $activity['technician_id'])
+                                        selected
+                                    @endif>
+                                    {{ $technician['name'] }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="col-lg-6 mb-4">
                         <label for="type_activity_id">Tipo</label>
                         <select name="type_activity_id" id="type_activity_id" class="form-control">
                             <option value="">Seleccione</option>
+                            @foreach ($types as $type)
+                                <option value="{{ $type['id'] }}"
+                                @if ($type['id'] == $activity['type_activity_id'])
+                                    selected
+                                @endif>
+                                    {{ $type['description'] }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                 </div>

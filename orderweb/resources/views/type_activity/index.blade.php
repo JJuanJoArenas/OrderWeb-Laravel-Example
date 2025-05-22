@@ -1,6 +1,6 @@
 @extends('templates.base')
-@section('title', 'Observaciones')
-@section('header', 'Observaciones')
+@section('title', 'Tipos de Actividades')
+@section('header', 'Tipos de Actividades')
 @section('content')
     
     <div class="row">
@@ -22,19 +22,21 @@
                     </tr>
                 </thead>
                 <body>
+                    @foreach ($type_activities as $type_activity)
                     <tr>
-                        <td>1</td>
-                        <td>Causal prueba</td>
+                        <td>{{ $type_activity["id"] }}</td>
+                        <td>{{ $type_activity["description"] }}</td>
                         <td>
-                            <a href="#" class="btn btn-primary btn-circle btn-sm" title="Editar">
+                            <a href="{{ route('type_activity.edit', $type_activity["id"]) }}" class="btn btn-primary btn-circle btn-sm" title="Editar">
                                 <i class="far fa-edit"></i>
                             </a>
-                            <a href="#" class="btn btn-danger btn-circle btn-sm" title="Eliminar"
+                            <a href="{{ route('type_activity.destroy', $type_activity["id"]) }}" class="btn btn-danger btn-circle btn-sm" title="Eliminar"
                                 onclick="return remove();">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </td>
                     </tr>
+                    @endforeach
                 </body>
             </table>
         </div>

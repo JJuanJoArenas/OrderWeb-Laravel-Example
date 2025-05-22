@@ -16,28 +16,35 @@
             <table id="table_data" class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th>Fecha</th>
+                        <th>ID</th>
+                        <th>Fecha legalizacion</th>
+                        <th>Direccion</th>
                         <th>Ciudad</th>
                         <th>Causal</th>
                         <th>Observacion</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <body>
+                    @foreach ($orders as $order)
                     <tr>
-                        <td>04/10/2025</td>
-                        <td>Tulua</td>
-                        <td>Causal prueba 3</td>
-                        <td>Hola</td>
+                        <td>{{ $order['id'] }}</td>
+                        <td>{{ $order['legalization_date'] }}</td>
+                        <td>{{ $order['address'] }}</td>
+                        <td>{{ $order['city'] }}</td>
+                        <td>{{ $order->causal->description }}</td>
+                        <td>@if($order->observation) {{ $order->observation->description }} @endif</td>
                         <td>
-                            <a href="#" class="btn btn-primary btn-circle btn-sm" title="Editar">
+                            <a href="{{ route('order.edit', $order['id']) }}" class="btn btn-primary btn-circle btn-sm" title="Editar">
                                 <i class="far fa-edit"></i>
                             </a>
-                            <a href="#" class="btn btn-danger btn-circle btn-sm" title="Eliminar"
+                            <a href="{{ route('order.destroy', $order['id']) }}" class="btn btn-danger btn-circle btn-sm" title="Eliminar"
                                 onclick="return remove();">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </td>
                     </tr>
+                    @endforeach
                 </body>
             </table>
         </div>
