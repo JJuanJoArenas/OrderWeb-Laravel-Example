@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activity;
 use App\Models\Causal;
 use App\Models\Observation;
 use App\Models\Order;
+use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -62,7 +65,18 @@ class OrderController extends Controller
                 ['name' => 'BUGA', 'value' => 'BUGA'],
                 ['name' => 'PALMIRA', 'value' => 'PALMIRA']
             ];
-            return view('order.edit', compact('order', 'causals', 'observations', 'cities'));
+
+            //consultar actividades disponibles
+            $query = DB::select("SELECT * FROM activity WHERE activity.id NOT IN (
+                                SELECT order_activity.activity_id FROM order_activity
+                                WHERE order_activity.order_id = ?)", [$id]);
+
+            $availableActivities = Collection::make($query);
+
+            //consultar actividades agrupadas a la orden
+            $addedActivities = $order->activities;
+
+            return view('order.edit', compact('order', 'causals', 'observations', 'cities', 'availableActivities', 'addedActivities'));
         }
         else
         {
@@ -105,5 +119,53 @@ class OrderController extends Controller
             session()->flash('warning', 'No se encuentra el registro solicitado');
         }
         return redirect()->route('order.index');
+    }
+
+    /**
+     * Add an activity to an order
+     */
+    public function add_activity(string $order_id, string $activity_id)
+    {
+        $order = Order::find($order_id);
+        if(!$order)
+        {
+            session()->flash('error', 'No se encuentra la orden');
+            return redirect()->route('order.edit', $order_id)->withInput();
+        }
+        $activity = Activity::find($activity_id);
+        if(!$activity)
+        {
+            session()->flash('error', 'No se encuentra la orden');
+            return redirect()->route('order.edit', $activity_id)->withInput();
+        }
+
+        //delete the activity in order_activity
+        $order->activities()->attach($activity_id);
+        session()->flash('message', 'Actividad agregada exitosamante');
+        return redirect()->route('order.edit', $order_id);
+    }
+
+    /**
+     * Remove an activity to an order
+     */
+    public function remove_activity(string $order_id, string $activity_id)
+    {
+        $order = Order::find($order_id);
+        if(!$order)
+        {
+            session()->flash('error', 'No se encuentra la orden');
+            return redirect()->route('order.edit', $order_id)->withInput();
+        }
+        $activity = Activity::find($activity_id);
+        if(!$activity)
+        {
+            session()->flash('error', 'No se encuentra la orden');
+            return redirect()->route('order.edit', $activity_id)->withInput();
+        }
+
+        //delete the activity in order-activity
+        $order->activities()->detach($activity_id);
+        session()->flash('message', 'Actividad removida exitosamante');
+        return redirect()->route('order.edit', $order_id);
     }
 }
