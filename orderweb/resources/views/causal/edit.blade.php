@@ -2,9 +2,10 @@
 @section('title', 'Editar Causal')
 @section('header', 'Editar Causal')
 @section('content')
+@include('templates/messages')
     <div class="row">
         <div class="col-lg-12 mb-4">
-            <form action="{{ route('causal.update', $causal['id']) }}" method="PUT">
+            <form action="{{ route('causal.update', $causal['id']) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="row form-group">
