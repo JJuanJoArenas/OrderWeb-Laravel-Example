@@ -2,6 +2,7 @@
 @section('title', 'Crear Tecnico')
 @section('header', 'Crear Tecnico')
 @section('content')
+@include('templates/messages')
     <div class="row">
         <div class="col-lg-12 mb-4">
             <form action="{{ route('technician.store') }}" method="POST">
@@ -9,11 +10,11 @@
                 <div class="row form-group">
                     <div class="col-lg-6 mb-4">
                         <label for="document">Documento</label>
-                        <input type="text" class="form-control" name="document" id="document" required>
+                        <input type="text" class="form-control" name="document" id="document" required value="{{ old('document') }}">
                     </div>
                     <div class="col-lg-6 mb-4">
                         <label for="name">Nombre</label>
-                        <input type="text" class="form-control" name="name" id="name" required>
+                        <input type="text" class="form-control" name="name" id="name" required value="{{ old('name') }}">
                     </div>
                 </div>
                 <div class="row form-group">
@@ -28,7 +29,7 @@
                     </div>
                         <div class="col-lg-6 mb-4">
                         <label for="phone">Telefono</label>
-                        <input type="text" class="form-control" name="phone" id="phone" required>
+                        <input type="text" class="form-control" name="phone" id="phone" required value="{{ old('phone') }}">
                     </div>
                 </div>
                 <div class="row">
