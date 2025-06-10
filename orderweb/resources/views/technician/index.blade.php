@@ -27,11 +27,11 @@
                 <body>
                     @foreach ($technicians as $technician)
                     <tr>
-                        <td>{{ $technician["id"] }}</td>
-                        <td>{{ $technician["document"] }}</td>
-                        <td>{{ $technician["name"] }}</td>
-                        <td>{{ $technician["speciality"] }}</td>
-                        <td>{{ $technician["phone"] }}</td>
+                        <td>{{ $technician['id'] }}</td>
+                        <td>{{ $technician['document'] }}</td>
+                        <td>{{ $technician['name'] }}</td>
+                        <td>{{ $technician['speciality'] }}</td>
+                        <td>{{ $technician['phone'] }}</td>
                         <td>
                             <a href="{{ route('technician.edit', $technician["id"]) }}" class="btn btn-primary btn-circle btn-sm" title="Editar">
                                 <i class="far fa-edit"></i>
